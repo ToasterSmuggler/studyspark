@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySpark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      data-memberstack-app="app_cmnkaetk6001e0sushue127qt"
+      src="https://static.memberstack.com/scripts/v2/memberstack.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a class="brand-mark" href="index.html">StudySpark</a>
+        <div class="top-nav-right">
+          <div class="nav-links">
+            <a href="index.html" class="nav-link active">Dashboard</a>
+            <a href="essay.html" class="nav-link">AI Essay Structure</a>
+            <a href="braindump.html" class="nav-link">Brain Dump</a>
+            <a href="log.html" class="nav-link">Revision Log</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="membership.html" class="nav-link">Membership</a>
+          </div>
+          <div id="auth-slot" class="auth-slot"></div>
+        </div>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-copy-block">
+          <p class="eyebrow">StudySpark</p>
+          <h1>A calm study hub for homework, revision, and written work.</h1>
+          <p class="hero-copy">
+            Keep track of what is due, start focused revision sessions, and stay
+            on top of schoolwork without the usual clutter and panic.
+          </p>
+          <div class="hero-badges" aria-label="StudySpark highlights">
+            <span class="hero-badge">Homework in one place</span>
+            <span class="hero-badge">Focused revision sessions</span>
+            <span class="hero-badge">Clear essay planning</span>
+          </div>
+          <div class="hero-note-card">
+            <strong>Built for real school use</strong>
+            <p>
+              Quick enough for students to open every day, and clear enough for
+              teachers to recommend with confidence.
+            </p>
+          </div>
+        </div>
+        <div class="goal-card hero-goal-card">
+          <p class="hero-card-label">Today's progress</p>
+          <div class="goal-summary">
+            <strong id="goal-progress-text">0 / 3 goals completed</strong>
+            <span id="goal-progress-caption">Start with one task or one timer session.</span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div id="goal-progress-bar" class="progress-bar"></div>
+          </div>
+          <div class="goal-grid">
+            <div class="goal-item">
+              <span class="goal-label">Homework done</span>
+              <strong id="goal-homework-count">0 / 2</strong>
+            </div>
+            <div class="goal-item">
+              <span class="goal-label">Revision sessions</span>
+              <strong id="goal-session-count">0 / 1</strong>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="goals-panel">
+        <div class="goals-copy">
+          <p class="eyebrow">Everything In One Flow</p>
+          <h2>Plan the work, do the revision, and keep momentum going.</h2>
+          <p class="hero-copy">
+            StudySpark is designed to help students know what to do next, rather
+            than jumping between scattered notes, timers, and homework lists.
+          </p>
+        </div>
+
+        <div class="goal-card essay-cta-card">
+          <p class="eyebrow">Quick Access</p>
+          <h3>Open your main study tools</h3>
+          <p class="essay-cta-copy">
+            Move straight into a brain dump, revision log, progress check, or
+            essay plan without leaving the dashboard.
+          </p>
+          <div class="tool-link-grid">
+            <a class="essay-link essay-link-large essay-link-soft" href="braindump.html">Open brain dump</a>
+            <a class="essay-link essay-link-large" href="log.html">Open revision log</a>
+            <a class="essay-link essay-link-large essay-link-secondary" href="stats.html">Open stats</a>
+            <a class="essay-link essay-link-large essay-link-tertiary" href="essay.html">Open essay tool</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-strip">
+        <div class="trust-card">
+          <p class="eyebrow">For Students</p>
+          <h3>Less mental clutter, more direction.</h3>
+          <p>
+            Use one simple space to see homework, start revision quickly, and
+            build better habits without overcomplicating things.
+          </p>
+        </div>
+        <div class="trust-card">
+          <p class="eyebrow">For Teachers</p>
+          <h3>Easy to recommend and easy to understand.</h3>
+          <p>
+            StudySpark supports independent study, revision routines, and essay
+            planning in a format that feels calm, clear, and school-friendly.
+          </p>
+        </div>
+        <div class="trust-card">
+          <p class="eyebrow">Why It Works</p>
+          <h3>Useful in under a minute.</h3>
+          <p>
+            Students can open it, act on something straight away, and leave
+            feeling more organised instead of more overwhelmed.
+          </p>
+        </div>
+      </section>
+
+      <main class="dashboard">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Homework Tracker</p>
+              <h2>Add and manage your tasks</h2>
+            </div>
+          </div>
+
+          <form id="homework-form" class="task-form">
+            <label>
+              Task name
+              <input
+                id="task-title"
+                type="text"
+                placeholder="Finish maths worksheet"
+                required
+              />
+            </label>
+
+            <label>
+              Subject
+              <input
+                id="task-subject"
+                type="text"
+                placeholder="Maths"
+                required
+              />
+            </label>
+
+            <label>
+              Due date
+              <input id="task-date" type="date" required />
+            </label>
+
+            <button type="submit" class="primary-btn">Add homework</button>
+          </form>
+
+          <p id="dashboard-status" class="auth-message auth-message-info">
+            Add a task to start building your homework list.
+          </p>
+
+          <ul id="task-list" class="task-list"></ul>
+        </section>
+
+        <section class="panel timer-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Revision Timer</p>
+              <h2>Stay focused with timed sessions</h2>
+            </div>
+          </div>
+
+          <div class="timer-display">
+            <span id="timer-label">Focus Session</span>
+            <strong id="timer">25:00</strong>
+          </div>
+
+          <div class="timer-controls">
+            <button class="primary-btn" id="start-timer">Start</button>
+            <button class="secondary-btn" id="pause-timer">Pause</button>
+            <button class="secondary-btn" id="reset-timer">Reset</button>
+          </div>
+
+          <div class="preset-row">
+            <button class="preset-btn" data-minutes="25">25 min focus</button>
+            <button class="preset-btn" data-minutes="10">10 min review</button>
+            <button class="preset-btn" data-minutes="5">5 min break</button>
+          </div>
+
+          <p id="timer-message" class="timer-message hidden">
+            Session complete. Good work.
+          </p>
+
+          <p class="timer-note">
+            Use focus blocks for revision, then take short breaks to recharge.
+          </p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Built by Louis Burton</p>
+      </footer>
+    </div>
+
+    <script type="module" src="auth-nav.js?v=20260409"></script>
+    <script type="module" src="script.js?v=20260409"></script>
+  </body>
+</html>

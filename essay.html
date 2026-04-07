@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySpark | AI Essay Structure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      data-memberstack-app="app_cmnkaetk6001e0sushue127qt"
+      src="https://static.memberstack.com/scripts/v2/memberstack.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a class="brand-mark" href="index.html">StudySpark</a>
+        <div class="top-nav-right">
+          <div class="nav-links">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="essay.html" class="nav-link active">AI Essay Structure</a>
+            <a href="braindump.html" class="nav-link">Brain Dump</a>
+            <a href="log.html" class="nav-link">Revision Log</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="membership.html" class="nav-link">Membership</a>
+          </div>
+          <div id="auth-slot" class="auth-slot"></div>
+        </div>
+      </nav>
+
+      <header class="hero essay-hero">
+        <div>
+          <p class="eyebrow">AI Essay Structure</p>
+          <h1>Turn a topic into a clean essay plan.</h1>
+          <p class="hero-copy">
+            Enter your subject, title, and main argument, then StudySpark will
+            build a simple structure you can follow while writing.
+          </p>
+        </div>
+
+        <div class="hero-card">
+          <p>Best For</p>
+          <strong>English essays</strong>
+          <strong>History responses</strong>
+          <span>Quick structure before you start writing.</span>
+        </div>
+      </header>
+
+      <main class="essay-layout">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Essay Builder</p>
+              <h2>Describe the essay you need to write</h2>
+            </div>
+          </div>
+
+          <form id="essay-form" class="essay-form">
+            <label>
+              Subject
+              <input id="essay-subject" type="text" placeholder="English" required />
+            </label>
+
+            <label>
+              Essay title or question
+              <input
+                id="essay-question"
+                type="text"
+                placeholder="How does Shakespeare present ambition in Macbeth?"
+                required
+              />
+            </label>
+
+            <label>
+              Main argument
+              <input
+                id="essay-argument"
+                type="text"
+                placeholder="Ambition is shown as powerful but destructive."
+                required
+              />
+            </label>
+
+            <label>
+              Number of body paragraphs
+              <input id="essay-paragraphs" type="number" min="2" max="5" value="3" required />
+            </label>
+
+            <button type="submit" class="primary-btn">Generate basic structure</button>
+          </form>
+        </section>
+
+        <section class="panel essay-output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Generated Plan</p>
+              <h2>Your essay structure</h2>
+            </div>
+          </div>
+
+          <div id="essay-output" class="essay-output">
+            <div class="essay-block">
+              <h3>Ready when you are</h3>
+              <p>
+                Fill in the form and your introduction, paragraph ideas, and
+                conclusion prompts will appear here.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">StudySpark Plus</p>
+              <h2>Want the AI version?</h2>
+            </div>
+          </div>
+          <p class="essay-cta-copy">
+            Open the premium AI essay page for a more tailored structure that
+            feels more specific to your question and argument.
+          </p>
+          <a class="essay-link essay-link-large" href="ai-essay.html">Open AI Essay Writer</a>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Built by Louis Burton</p>
+      </footer>
+    </div>
+
+    <script type="module" src="auth-nav.js?v=20260407"></script>
+    <script src="essay.js"></script>
+  </body>
+</html>

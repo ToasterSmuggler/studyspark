@@ -1,0 +1,11 @@
+export declare enum HttpMethod {
+    POST = "POST",
+    GET = "GET",
+    PATCH = "PATCH",
+    DELETE = "DELETE"
+}
+export declare enum HttpHeaders {
+    API_KEY = "X-API-Key",
+    API_VERSION = "X-API-Version",
+    USER_AGENT = "X-User-Agent"
+}

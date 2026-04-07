@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySpark | Membership</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      data-memberstack-app="app_cmnkaetk6001e0sushue127qt"
+      src="https://static.memberstack.com/scripts/v2/memberstack.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a class="brand-mark" href="index.html">StudySpark</a>
+        <div class="top-nav-right">
+          <div class="nav-links">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="essay.html" class="nav-link">AI Essay Structure</a>
+            <a href="braindump.html" class="nav-link">Brain Dump</a>
+            <a href="log.html" class="nav-link">Revision Log</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="membership.html" class="nav-link active">Membership</a>
+          </div>
+          <div id="auth-slot" class="auth-slot"></div>
+        </div>
+      </nav>
+
+      <header class="hero membership-hero">
+        <div>
+          <p class="eyebrow">Membership</p>
+          <h1>Choose the StudySpark plan that fits how you study.</h1>
+          <p class="hero-copy">
+            Keep the free core for day-to-day study, or unlock the premium
+            version when you want a more complete revision setup.
+          </p>
+        </div>
+
+        <div class="hero-card">
+          <p>Upgrade</p>
+          <strong>Simple plans</strong>
+          <strong>Student-friendly</strong>
+          <span>Made to feel useful, not overcomplicated.</span>
+        </div>
+      </header>
+
+      <main class="membership-grid">
+        <section class="membership-card membership-card-free">
+          <p class="eyebrow">Free</p>
+          <h2>StudySpark Core</h2>
+          <p class="membership-price">£0</p>
+          <p class="membership-copy">
+            A calm place to track homework, revise, and stay organised.
+          </p>
+          <ul class="membership-list">
+            <li>Homework tracker</li>
+            <li>Revision timer</li>
+            <li>Brain Dump notes and sketch pad</li>
+            <li>Revision log</li>
+            <li>Basic stats</li>
+            <li>Basic essay structure builder</li>
+          </ul>
+
+          <!-- ✅ FREE PLAN BUTTON -->
+          <button 
+            class="essay-link essay-link-large essay-link-soft"
+            data-ms-plan:add="pln_studysparkfree-no20u5e"
+            data-ms-modal="signup"
+          >
+            Get Free Plan
+          </button>
+        </section>
+
+        <section class="membership-card membership-card-pro">
+          <div class="membership-badge">Recommended</div>
+          <p class="eyebrow">Premium</p>
+          <h2>StudySpark Plus</h2>
+          <p class="membership-price">From £3.99<span>/month</span></p>
+          <p class="membership-copy">
+            Unlock the fuller version of StudySpark for deeper revision support
+            and more polished study tools.
+          </p>
+          <ul class="membership-list">
+            <li>Everything in free</li>
+            <li>AI Brain Dump organiser</li>
+            <li>AI essay structure builder</li>
+            <li>Expanded saved outlines and notes</li>
+            <li>Future premium features as they launch</li>
+          </ul>
+
+          <p id="membership-status" class="auth-message auth-message-info">
+            Upgrade now to unlock the premium AI tools.
+          </p>
+
+          <!-- ✅ PLUS PLAN BUTTON -->
+          <button
+            id="membership-upgrade"
+            class="essay-link essay-link-large"
+            data-ms-plan:add="pln_studysparkplus-qs30u04"
+            data-ms-modal="signup"
+          >
+            Get Plus Plan
+          </button>
+        </section>
+      </main>
+
+      <section class="panel membership-note">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">For Teams</p>
+            <h2>Need team or school access?</h2>
+          </div>
+        </div>
+        <p class="hero-copy">
+          If you are setting up team accounts, this page can also act as the
+          upgrade destination for schools, tutors, or group study access.
+        </p>
+      </section>
+
+      <footer class="site-footer">
+        <p>Built by Louis Burton</p>
+      </footer>
+    </div>
+
+    <script type="module" src="auth-nav.js?v=20260407"></script>
+    <script type="module" src="membership.js?v=20260407"></script>
+  </body>
+</html>

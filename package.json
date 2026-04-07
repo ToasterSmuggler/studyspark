@@ -1,0 +1,10 @@
+{
+  "name": "studyspark",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "@memberstack/admin": "latest",
+    "@supabase/supabase-js": "latest"
+  }
+}

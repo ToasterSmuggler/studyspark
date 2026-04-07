@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySpark | AI Brain Dump</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      data-memberstack-app="app_cmnkaetk6001e0sushue127qt"
+      src="https://static.memberstack.com/scripts/v2/memberstack.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a class="brand-mark" href="index.html">StudySpark</a>
+        <div class="top-nav-right">
+          <div class="nav-links">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="essay.html" class="nav-link">AI Essay Structure</a>
+            <a href="braindump.html" class="nav-link">Brain Dump</a>
+            <a href="log.html" class="nav-link">Revision Log</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="membership.html" class="nav-link">Membership</a>
+          </div>
+          <div id="auth-slot" class="auth-slot"></div>
+        </div>
+      </nav>
+
+      <header class="hero essay-hero">
+        <div>
+          <p class="eyebrow">AI Brain Dump</p>
+          <h1>Turn messy thoughts into a cleaner revision outline.</h1>
+          <p class="hero-copy">
+            Paste rough notes, half-finished ideas, or quick bullet points and
+            StudySpark will turn them into a more structured, exam-ready plan.
+          </p>
+        </div>
+
+        <div class="hero-card">
+          <p>StudySpark Plus</p>
+          <strong>AI organiser</strong>
+          <strong>Saved outlines</strong>
+          <span>Best used after a fast brain dump session.</span>
+        </div>
+      </header>
+
+      <main class="study-layout">
+        <div class="study-left-column">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Messy Notes</p>
+                <h2>Paste or type the rough version first</h2>
+              </div>
+            </div>
+
+            <textarea
+              id="brain-notes"
+              class="brain-notes ai-notes"
+              placeholder="- Main idea&#10;- Key quote&#10;- Example&#10;- What I want the paragraph to show"
+            ></textarea>
+
+            <div class="brain-structure-actions">
+              <button class="primary-btn" id="brain-organise">Organise with AI</button>
+              <button class="secondary-btn" id="brain-save-outline" disabled>Copy to Notes</button>
+            </div>
+
+            <p id="brain-structure-status" class="brain-structure-status hidden"></p>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Structured Output</p>
+                <h2>Your cleaned-up revision plan</h2>
+              </div>
+            </div>
+
+            <div id="brain-structure-output" class="brain-structure-output">
+              <div class="essay-block">
+                <h3>Ready when you are</h3>
+                <p>
+                  Add your messy notes above and your organised outline will
+                  appear here.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="study-right-column">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Saved Notes</p>
+                <h2>Structured outlines saved to your account</h2>
+              </div>
+            </div>
+
+            <div id="brain-saved-list" class="brain-saved-list">
+              <p class="brain-saved-empty">No saved outlines yet.</p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Back To Basics</p>
+                <h2>Need the normal Brain Dump page?</h2>
+              </div>
+            </div>
+            <p class="essay-cta-copy">
+              Go back to the standard Brain Dump page for timers, free notes,
+              and sketching before you organise anything.
+            </p>
+            <a class="essay-link essay-link-large essay-link-soft" href="braindump.html">Open Brain Dump</a>
+          </section>
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <p>Built by Louis Burton</p>
+      </footer>
+    </div>
+
+    <script type="module" src="auth-nav.js?v=20260407"></script>
+    <script type="module" src="ai-braindump.js?v=20260407"></script>
+  </body>
+</html>

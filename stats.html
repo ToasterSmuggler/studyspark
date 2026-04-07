@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySpark | Stats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      data-memberstack-app="app_cmnkaetk6001e0sushue127qt"
+      src="https://static.memberstack.com/scripts/v2/memberstack.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a class="brand-mark" href="index.html">StudySpark</a>
+        <div class="top-nav-right">
+          <div class="nav-links">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="essay.html" class="nav-link">AI Essay Structure</a>
+            <a href="braindump.html" class="nav-link">Brain Dump</a>
+            <a href="log.html" class="nav-link">Revision Log</a>
+            <a href="stats.html" class="nav-link active">Stats</a>
+            <a href="membership.html" class="nav-link">Membership</a>
+          </div>
+          <div id="auth-slot" class="auth-slot"></div>
+        </div>
+      </nav>
+
+      <header class="hero essay-hero">
+        <div>
+          <p class="eyebrow">Stats</p>
+          <h1>See your study progress in one place.</h1>
+          <p class="hero-copy">
+            Review homework completion, timer sessions, and logged revision so
+            you can see what is improving over time.
+          </p>
+        </div>
+
+        <div class="hero-card">
+          <p>Progress View</p>
+          <strong id="stats-hero-top">0 tasks completed</strong>
+          <strong id="stats-hero-middle">0 timer sessions</strong>
+          <span id="stats-hero-bottom">0 minutes logged</span>
+        </div>
+      </header>
+
+      <main class="essay-layout">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Overview</p>
+              <h2>Your current totals</h2>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="goal-item">
+              <span class="goal-label">Homework completed</span>
+              <strong id="stats-homework-total">0</strong>
+            </div>
+            <div class="goal-item">
+              <span class="goal-label">Revision sessions</span>
+              <strong id="stats-session-total">0</strong>
+            </div>
+            <div class="goal-item">
+              <span class="goal-label">Minutes revised</span>
+              <strong id="stats-minutes-total">0</strong>
+            </div>
+            <div class="goal-item">
+              <span class="goal-label">Subjects revised</span>
+              <strong id="stats-subject-total">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Recent Activity</p>
+              <h2>Latest revision entries</h2>
+            </div>
+          </div>
+
+          <p id="stats-status" class="auth-message auth-message-info">
+            Your latest revision totals and activity will load here.
+          </p>
+
+          <div id="stats-activity" class="log-list"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Built by Louis Burton</p>
+      </footer>
+    </div>
+
+    <script type="module" src="auth-nav.js?v=20260407"></script>
+    <script type="module" src="stats.js?v=20260407"></script>
+  </body>
+</html>
