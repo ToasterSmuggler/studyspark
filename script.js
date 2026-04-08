@@ -5,7 +5,7 @@ import {
   fetchRevisionSessions,
   incrementRevisionSession,
   updateHomework,
-} from "./supabase-data.js?v=20260409";
+} from "./supabase-data.js";
 
 const homeworkForm = document.querySelector("#homework-form");
 const taskList = document.querySelector("#task-list");
@@ -41,7 +41,11 @@ function normaliseUiError(error, fallbackMessage) {
   }
 
   if (message.includes("Unexpected token '<'")) {
-    return "Outdated cached code detected. Hard refresh (Cmd+Shift+R) and try again.";
+    return "Session data could not be read. Please log out and log in again.";
+  }
+
+  if (message.includes("JWS Protected Header is invalid")) {
+    return "Session token is invalid. Please log out and log in again.";
   }
 
   return message;

@@ -2,7 +2,7 @@ import {
   getCurrentSession,
   getUserDisplayName,
   signOutUser,
-} from "./auth-client.js?v=20260407";
+} from "./auth-client.js";
 
 const authSlot = document.querySelector("#auth-slot");
 

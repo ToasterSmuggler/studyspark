@@ -1,8 +1,12 @@
-import { getCurrentMemberstackMember } from "./memberstack-client.js?v=20260407";
+import { getCurrentMemberstackMember } from "./memberstack-client.js";
 
 const membershipStatus = document.querySelector("#membership-status");
 const upgradeButton = document.querySelector("#membership-upgrade");
-const PLUS_PLAN_HINTS = ["studysparkplus", "pln_studysparkplus-qs30u04"];
+const PLUS_PLAN_HINTS = [
+  "studysparkplus",
+  "pln_studysparkplus-ml6u0s2r",
+  "prc_studysparkplus-33710sk0",
+];
 
 function setMembershipStatus(message, tone = "info") {
   if (!membershipStatus) {

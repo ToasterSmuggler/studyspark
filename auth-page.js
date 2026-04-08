@@ -3,11 +3,11 @@ import {
   getUserDisplayName,
   signOutUser,
   updateDisplayName,
-} from "./auth-client.js?v=20260407";
+} from "./auth-client.js";
 import {
   openMemberstackLoginModal,
   openMemberstackSignupModal,
-} from "./memberstack-client.js?v=20260407";
+} from "./memberstack-client.js";
 
 const loginButton = document.querySelector("#login-open");
 const signupButton = document.querySelector("#signup-open");

@@ -4,7 +4,7 @@ import {
   logoutMemberstackMember,
   openMemberstackLoginModal,
   openMemberstackSignupModal,
-} from "./memberstack-client.js?v=20260407";
+} from "./memberstack-client.js";
 
 const DISPLAY_NAME_KEY = "studyspark.member.display-names.v1";
 

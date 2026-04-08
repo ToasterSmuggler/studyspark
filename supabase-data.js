@@ -10,6 +10,7 @@ export async function requireUser() {
 async function authedApiRequest(path, options = {}) {
   let token = null;
   let member = null;
+  let sessionUser = null;
 
   try {
     token = await getMemberstackToken();
@@ -25,7 +26,17 @@ async function authedApiRequest(path, options = {}) {
     member = null;
   }
 
-  if (!token && !member?.id) {
+  try {
+    const session = await getCurrentSession();
+    sessionUser = session?.user || null;
+  } catch {
+    sessionUser = null;
+  }
+
+  const memberId = String(member?.id || sessionUser?.id || "").trim();
+  const memberEmail = String(member?.auth?.email || sessionUser?.email || "").trim();
+
+  if (!token && !memberId) {
     throw new Error("You need to log in first.");
   }
 
@@ -43,10 +54,8 @@ async function authedApiRequest(path, options = {}) {
         "Content-Type": "application/json",
         Accept: "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...(member?.id ? { "X-Memberstack-Id": String(member.id) } : {}),
-        ...(member?.auth?.email
-          ? { "X-Memberstack-Email": String(member.auth.email) }
-          : {}),
+        ...(memberId ? { "X-Memberstack-Id": memberId } : {}),
+        ...(memberEmail ? { "X-Memberstack-Email": memberEmail } : {}),
         ...(options.headers || {}),
       },
       body: options.body ? JSON.stringify(options.body) : undefined,

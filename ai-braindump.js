@@ -1,4 +1,4 @@
-import { createBrainDumpOutline, fetchBrainDumpOutlines } from "./supabase-data.js?v=20260407";
+import { createBrainDumpOutline, fetchBrainDumpOutlines } from "./supabase-data.js";
 
 const brainNotes = document.querySelector("#brain-notes");
 const brainOrganiseButton = document.querySelector("#brain-organise");

@@ -1,4 +1,4 @@
-import { fetchBrainDumpState, saveBrainDumpState } from "./supabase-data.js?v=20260407";
+import { fetchBrainDumpState, saveBrainDumpState } from "./supabase-data.js";
 
 const brainTimerElement = document.querySelector("#brain-timer");
 const brainTimerLabel = document.querySelector("#brain-timer-label");

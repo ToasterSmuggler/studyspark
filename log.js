@@ -2,7 +2,7 @@ import {
   createRevisionLogEntry,
   deleteRevisionLogEntry,
   fetchRevisionLog,
-} from "./supabase-data.js?v=20260407";
+} from "./supabase-data.js";
 
 const logForm = document.querySelector("#log-form");
 const logList = document.querySelector("#log-list");

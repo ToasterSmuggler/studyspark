@@ -2,7 +2,7 @@ import {
   fetchHomework,
   fetchRevisionLog,
   fetchRevisionSessions,
-} from "./supabase-data.js?v=20260407";
+} from "./supabase-data.js";
 
 const statsHomeworkTotal = document.querySelector("#stats-homework-total");
 const statsSessionTotal = document.querySelector("#stats-session-total");
