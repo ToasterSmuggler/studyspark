@@ -213,3 +213,32 @@ export async function createBrainDumpOutline(outline) {
 
   return payload.outline;
 }
+
+export async function fetchMemberAccess() {
+  const payload = await authedApiRequest("/api/member-access");
+  return payload.access || null;
+}
+
+export async function generateAiBrainDumpOutline(notes) {
+  return authedApiRequest("/api/brain-dump-outline", {
+    method: "POST",
+    body: { notes },
+  });
+}
+
+export async function generateAiEssayStructure({
+  subject,
+  question,
+  argument,
+  paragraphCount,
+}) {
+  return authedApiRequest("/api/essay-structure", {
+    method: "POST",
+    body: {
+      subject,
+      question,
+      argument,
+      paragraphCount,
+    },
+  });
+}

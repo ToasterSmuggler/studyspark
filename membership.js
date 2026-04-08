@@ -1,4 +1,5 @@
 import { getCurrentMemberstackMember } from "./memberstack-client.js";
+import { fetchMemberAccess } from "./supabase-data.js";
 
 const membershipStatus = document.querySelector("#membership-status");
 const upgradeButton = document.querySelector("#membership-upgrade");
@@ -103,6 +104,18 @@ async function initMembershipPage() {
         "info"
       );
       return;
+    }
+
+    try {
+      const access = await fetchMemberAccess();
+
+      if (access?.isPremium) {
+        setUpgradeAsOwned();
+        setMembershipStatus("You already have StudySpark Plus on this account.", "success");
+        return;
+      }
+    } catch {
+      // Fall back to client-side membership hint check below.
     }
 
     if (memberHasPlusPlan(member)) {

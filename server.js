@@ -5,6 +5,7 @@ const path = require("path");
 const PORT = Number(process.env.PORT) || 3000;
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://cpaedgcrikdbgcmoqllz.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const MEMBERSTACK_SECRET_KEY = process.env.MEMBERSTACK_SECRET_KEY || "";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4.1";
 const HF_TOKEN = process.env.HF_TOKEN;
@@ -12,6 +13,11 @@ const HF_MODEL = process.env.HF_MODEL || "openai/gpt-oss-120b:fastest";
 const AI21_API_KEY = process.env.AI21_API_KEY;
 const AI21_MODEL = process.env.AI21_MODEL || "jamba-large";
 const rootDir = __dirname;
+const PLUS_PLAN_HINTS = [
+  "studysparkplus",
+  "pln_studysparkplus-ml6u0s2r",
+  "prc_studysparkplus-33710sk0",
+];
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -54,6 +60,90 @@ function isLikelyJwtToken(value) {
   }
 
   return parts.every((part) => /^[A-Za-z0-9\-_]+$/.test(part));
+}
+
+function decodeJwtPayload(token) {
+  try {
+    const payloadPart = String(token || "").split(".")[1];
+
+    if (!payloadPart) {
+      return null;
+    }
+
+    const normalised = payloadPart.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = normalised + "=".repeat((4 - (normalised.length % 4)) % 4);
+    const decoded = Buffer.from(padded, "base64").toString("utf8");
+    return JSON.parse(decoded);
+  } catch {
+    return null;
+  }
+}
+
+function getMemberIdFromJwtPayload(token) {
+  const payload = decodeJwtPayload(token);
+  const possibleId = String(payload?.sub || payload?.id || "").trim();
+  return possibleId || "";
+}
+
+function hasPlusPlanHint(value) {
+  const lower = String(value || "").toLowerCase();
+  return PLUS_PLAN_HINTS.some((hint) => lower.includes(hint));
+}
+
+function getPlusPlanKeyFromMemberData(memberData) {
+  if (!memberData || typeof memberData !== "object") {
+    return "";
+  }
+
+  const possibleCollections = [
+    memberData.planConnections,
+    memberData.plan_connections,
+    memberData.plans,
+    memberData.plan,
+    memberData.data?.planConnections,
+    memberData.data?.plans,
+  ];
+
+  for (const collection of possibleCollections) {
+    if (Array.isArray(collection)) {
+      for (const item of collection) {
+        const valuesToCheck = [
+          item?.id,
+          item?.planId,
+          item?.plan_id,
+          item?.slug,
+          item?.name,
+          item?.key,
+          item?.plan?.id,
+          item?.plan?.slug,
+          item?.plan?.name,
+        ].filter(Boolean);
+
+        const matchedValue = valuesToCheck.find((value) => hasPlusPlanHint(value));
+
+        if (matchedValue) {
+          return String(matchedValue);
+        }
+      }
+    } else if (collection && typeof collection === "object") {
+      const valuesToCheck = [
+        collection.id,
+        collection.planId,
+        collection.plan_id,
+        collection.slug,
+        collection.name,
+        collection.key,
+      ].filter(Boolean);
+      const matchedValue = valuesToCheck.find((value) => hasPlusPlanHint(value));
+
+      if (matchedValue) {
+        return String(matchedValue);
+      }
+    }
+  }
+
+  const blob = JSON.stringify(memberData);
+  return hasPlusPlanHint(blob) ? "studysparkplus" : "";
 }
 
 function normaliseText(text = "") {
@@ -322,7 +412,11 @@ async function getMemberstackAdminClient() {
         throw new Error("Could not load the Memberstack admin package.");
       }
 
-      return memberstackAdmin.init("");
+      if (!MEMBERSTACK_SECRET_KEY) {
+        throw new Error("Missing MEMBERSTACK_SECRET_KEY.");
+      }
+
+      return memberstackAdmin.init(MEMBERSTACK_SECRET_KEY);
     });
   }
 
@@ -346,6 +440,16 @@ async function verifyMemberstackRequest(request) {
       verified = await memberstack.verifyToken({ token });
     } catch (error) {
       if (!headerMemberId) {
+        const decodedId = getMemberIdFromJwtPayload(token);
+
+        if (decodedId) {
+          verified = { id: decodedId };
+          return {
+            id: decodedId,
+            email: headerMemberEmail || `${decodedId}@memberstack.studyspark.local`,
+          };
+        }
+
         throw error;
       }
     }
@@ -416,6 +520,107 @@ async function getOrCreateSupabaseUserForMember(member) {
   }
 
   return data.user;
+}
+
+async function fetchStoredMemberAccess(member) {
+  const supabase = await getSupabaseAdminClient();
+  const { data, error } = await supabase
+    .from("member_access")
+    .select("*")
+    .eq("memberstack_id", member.id)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}
+
+async function saveMemberAccess(member, { isPremium, planKey }) {
+  const supabase = await getSupabaseAdminClient();
+  const payload = {
+    memberstack_id: member.id,
+    email: member.email || null,
+    is_premium: Boolean(isPremium),
+    plan_key: planKey || null,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { data, error } = await supabase
+    .from("member_access")
+    .upsert(payload, { onConflict: "memberstack_id" })
+    .select()
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data || payload;
+}
+
+async function fetchMemberstackMember(memberId) {
+  if (!MEMBERSTACK_SECRET_KEY) {
+    return null;
+  }
+
+  try {
+    const memberstack = await getMemberstackAdminClient();
+    const response = await memberstack.members.retrieve({ id: memberId });
+    return response?.data || response || null;
+  } catch {
+    return null;
+  }
+}
+
+async function resolveMemberAccess(member) {
+  let storedAccess = null;
+
+  try {
+    storedAccess = await fetchStoredMemberAccess(member);
+  } catch {
+    storedAccess = null;
+  }
+
+  let isPremium = Boolean(storedAccess?.is_premium);
+  let planKey = String(storedAccess?.plan_key || "").trim();
+  const memberstackMember = await fetchMemberstackMember(member.id);
+
+  if (memberstackMember) {
+    const detectedPlanKey = getPlusPlanKeyFromMemberData(memberstackMember);
+    const detectedPremium = Boolean(detectedPlanKey);
+
+    isPremium = detectedPremium;
+    planKey = detectedPlanKey || planKey;
+
+    try {
+      storedAccess = await saveMemberAccess(member, {
+        isPremium: detectedPremium,
+        planKey: detectedPlanKey || null,
+      });
+    } catch {
+      // Keep runtime status even if db write fails.
+    }
+  } else if (!storedAccess) {
+    try {
+      storedAccess = await saveMemberAccess(member, {
+        isPremium: false,
+        planKey: null,
+      });
+    } catch {
+      storedAccess = null;
+    }
+  }
+
+  return {
+    memberstackId: member.id,
+    email: member.email || "",
+    isPremium: Boolean(
+      storedAccess?.is_premium !== undefined ? storedAccess.is_premium : isPremium
+    ),
+    planKey: String(storedAccess?.plan_key || planKey || "").trim() || null,
+  };
 }
 
 function mapHomeworkRow(item) {
@@ -1190,8 +1395,32 @@ const server = http.createServer(async (request, response) => {
     }
   }
 
+  if (request.method === "GET" && url.pathname === "/api/member-access") {
+    try {
+      const member = await verifyMemberstackRequest(request);
+      const access = await resolveMemberAccess(member);
+      sendJson(response, 200, { access });
+      return;
+    } catch (error) {
+      sendJson(response, 401, {
+        error: error.message || "Could not load membership access.",
+      });
+      return;
+    }
+  }
+
   if (request.method === "POST" && url.pathname === "/api/brain-dump-outline") {
     try {
+      const member = await verifyMemberstackRequest(request);
+      const access = await resolveMemberAccess(member);
+
+      if (!access.isPremium) {
+        sendJson(response, 403, {
+          error: "StudySpark Plus is required for the AI Brain Dump organiser.",
+        });
+        return;
+      }
+
       const body = await readRequestBody(request);
       const notes = String(body.notes || "").trim();
 
@@ -1213,6 +1442,16 @@ const server = http.createServer(async (request, response) => {
 
   if (request.method === "POST" && url.pathname === "/api/essay-structure") {
     try {
+      const member = await verifyMemberstackRequest(request);
+      const access = await resolveMemberAccess(member);
+
+      if (!access.isPremium) {
+        sendJson(response, 403, {
+          error: "StudySpark Plus is required for the AI Essay builder.",
+        });
+        return;
+      }
+
       const body = await readRequestBody(request);
       const subject = normaliseText(body.subject);
       const question = normaliseText(body.question);

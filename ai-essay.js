@@ -1,10 +1,12 @@
+import { fetchMemberAccess, generateAiEssayStructure } from "./supabase-data.js";
+
 const essayForm = document.querySelector("#essay-ai-form");
 const essayOutput = document.querySelector("#essay-output");
 const paragraphInput = document.querySelector("#essay-paragraphs");
 const essayAiButton = document.querySelector("#essay-ai-button");
 const essayStatus = document.querySelector("#essay-status");
 
-let essayAiAvailable = true;
+let essayAiAvailable = false;
 
 function capitalise(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -63,37 +65,22 @@ function renderAiStructure(subject, question, argument, structure) {
 
 async function detectEssayAiAvailability() {
   try {
-    const response = await fetch("/api/essay-structure", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        subject: "English",
-        question: "Availability check",
-        argument: "A basic test argument",
-        paragraphCount: 3,
-      }),
-    });
+    const access = await fetchMemberAccess();
 
-    const contentType = response.headers.get("content-type") || "";
-
-    if (!contentType.includes("application/json")) {
+    if (!access?.isPremium) {
       essayAiAvailable = false;
       setEssayStatus(
-        "AI essay structure is only available in the full app version with the server running.",
+        "StudySpark Plus is required for the AI Essay builder. Upgrade on the Membership page.",
         "warning"
       );
       return;
     }
 
     essayAiAvailable = true;
+    setEssayStatus("StudySpark Plus access active. AI essay builder is ready.", "success");
   } catch {
     essayAiAvailable = false;
-    setEssayStatus(
-      "AI essay structure is only available in the full app version with the server running.",
-      "warning"
-    );
+    setEssayStatus("Please log in to use the AI essay builder.", "warning");
   }
 }
 
@@ -123,30 +110,12 @@ essayForm.addEventListener("submit", async (event) => {
     essayAiButton.disabled = true;
     setEssayStatus("Generating your StudySpark Plus essay structure...", "info");
 
-    const response = await fetch("/api/essay-structure", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        subject,
-        question,
-        argument,
-        paragraphCount,
-      }),
+    const data = await generateAiEssayStructure({
+      subject,
+      question,
+      argument,
+      paragraphCount,
     });
-
-    const contentType = response.headers.get("content-type") || "";
-
-    if (!contentType.includes("application/json")) {
-      throw new Error("AI essay structure is not available on this hosted version yet.");
-    }
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Could not generate AI structure.");
-    }
 
     renderAiStructure(subject, question, argument, data);
     setEssayStatus("AI essay structure ready.", "success");

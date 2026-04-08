@@ -1,4 +1,9 @@
-import { createBrainDumpOutline, fetchBrainDumpOutlines } from "./supabase-data.js";
+import {
+  createBrainDumpOutline,
+  fetchBrainDumpOutlines,
+  fetchMemberAccess,
+  generateAiBrainDumpOutline,
+} from "./supabase-data.js";
 
 const brainNotes = document.querySelector("#brain-notes");
 const brainOrganiseButton = document.querySelector("#brain-organise");
@@ -8,7 +13,7 @@ const brainStructureOutput = document.querySelector("#brain-structure-output");
 const brainSavedList = document.querySelector("#brain-saved-list");
 
 let latestStructuredOutline = null;
-let brainAiAvailable = true;
+let brainAiAvailable = false;
 
 function setStructureStatus(message, tone = "info") {
   brainStructureStatus.textContent = message;
@@ -24,30 +29,23 @@ function setBrainAiAvailability(isAvailable) {
 
 async function detectBrainAiAvailability() {
   try {
-    const response = await fetch("/api/brain-dump-outline", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ notes: "availability check" }),
-    });
+    const access = await fetchMemberAccess();
 
-    const contentType = response.headers.get("content-type") || "";
-
-    if (!contentType.includes("application/json")) {
+    if (!access?.isPremium) {
       setBrainAiAvailability(false);
       setStructureStatus(
-        "AI organiser is only available in the full app version with the server running.",
+        "StudySpark Plus is required for AI organiser. Upgrade on the Membership page.",
         "warning"
       );
       return;
     }
 
     setBrainAiAvailability(true);
+    setStructureStatus("StudySpark Plus access active. AI organiser is ready.", "success");
   } catch {
     setBrainAiAvailability(false);
     setStructureStatus(
-      "AI organiser is only available in the full app version with the server running.",
+      "Please log in to use the AI organiser.",
       "warning"
     );
   }
@@ -147,24 +145,7 @@ brainOrganiseButton.addEventListener("click", async () => {
     brainSaveOutlineButton.disabled = true;
     setStructureStatus("Organising your notes into a clearer outline...", "info");
 
-    const response = await fetch("/api/brain-dump-outline", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ notes }),
-    });
-    const contentType = response.headers.get("content-type") || "";
-
-    if (!contentType.includes("application/json")) {
-      throw new Error("AI organiser is not available on this hosted version yet.");
-    }
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Could not organise your notes.");
-    }
+    const data = await generateAiBrainDumpOutline(notes);
 
     renderStructuredOutline({
       sourceNotes: notes,
