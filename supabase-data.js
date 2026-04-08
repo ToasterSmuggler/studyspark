@@ -1,5 +1,6 @@
-import { getCurrentSession } from "./auth-client.js?v=20260409";
-import { getMemberstackToken } from "./memberstack-client.js?v=20260409";
+import { getCurrentSession } from "./auth-client.js";
+import { getMemberstackToken } from "./memberstack-client.js";
+import { getCurrentMemberstackMember } from "./memberstack-client.js";
 
 export async function requireUser() {
   const session = await getCurrentSession();
@@ -7,9 +8,24 @@ export async function requireUser() {
 }
 
 async function authedApiRequest(path, options = {}) {
-  const token = await getMemberstackToken();
+  let token = null;
+  let member = null;
 
-  if (!token) {
+  try {
+    token = await getMemberstackToken();
+  } catch {
+    // Some Memberstack builds don't expose a token method reliably.
+    // We can still continue with member-id fallback.
+    token = null;
+  }
+
+  try {
+    member = await getCurrentMemberstackMember();
+  } catch {
+    member = null;
+  }
+
+  if (!token && !member?.id) {
     throw new Error("You need to log in first.");
   }
 
@@ -18,16 +34,32 @@ async function authedApiRequest(path, options = {}) {
       ? new URL(path, window.location.origin).toString()
       : path;
 
-  const response = await fetch(url, {
-    method: options.method || "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-      ...(options.headers || {}),
-    },
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  });
+  let response;
+
+  try {
+    response = await fetch(url, {
+      method: options.method || "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(member?.id ? { "X-Memberstack-Id": String(member.id) } : {}),
+        ...(member?.auth?.email
+          ? { "X-Memberstack-Email": String(member.auth.email) }
+          : {}),
+        ...(options.headers || {}),
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
+  } catch (error) {
+    const message = String(error?.message || "");
+
+    if (message.includes("Unexpected token '<'")) {
+      throw new Error("Network session parsing failed. Please refresh and try again.");
+    }
+
+    throw error;
+  }
 
   const contentType = response.headers.get("content-type") || "";
   const rawText = await response.text();
